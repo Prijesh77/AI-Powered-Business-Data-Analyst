@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets
+.env
+
+# Datasets (download with the instructions in docs/phase2_data_exploration.md)
+data/raw/
+data/processed/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

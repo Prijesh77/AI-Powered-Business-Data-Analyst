@@ -1,0 +1,370 @@
+
+======================================================================
+1. Shape and types (raw workbook, both sheets)
+======================================================================
+Rows: 1,067,371   Columns: 9
+Invoice                   str
+StockCode                 str
+Description               str
+Quantity                int64
+InvoiceDate    datetime64[us]
+Price                 float64
+Customer ID           float64
+Country                   str
+SourceSheet               str
+dtype: object
+  Invoice StockCode                          Description  Quantity         InvoiceDate  Price  Customer ID         Country
+0  489434     85048  15CM CHRISTMAS GLASS BALL 20 LIGHTS        12 2009-12-01 07:45:00   6.95      13085.0  United Kingdom
+1  489434    79323P                   PINK CHERRY LIGHTS        12 2009-12-01 07:45:00   6.75      13085.0  United Kingdom
+2  489434    79323W                  WHITE CHERRY LIGHTS        12 2009-12-01 07:45:00   6.75      13085.0  United Kingdom
+3  489434     22041         RECORD FRAME 7" SINGLE SIZE         48 2009-12-01 07:45:00   2.10      13085.0  United Kingdom
+4  489434     21232       STRAWBERRY CERAMIC TRINKET BOX        24 2009-12-01 07:45:00   1.25      13085.0  United Kingdom
+
+======================================================================
+2. Date range per sheet
+======================================================================
+                               min                 max   count
+SourceSheet                                                   
+Year 2009-2010 2009-12-01 07:45:00 2010-12-09 20:01:00  525461
+Year 2010-2011 2010-12-01 08:26:00 2011-12-09 12:50:00  541910
+
+======================================================================
+3. Overlap between sheets
+======================================================================
+Rows dated >= 2010-12-01 in 'Year 2009-2010': 22,523
+Rows dated <  2010-12-10 in the other sheet:     22,523
+Identical row-for-row (same rows, same counts): True
+Rows after removing the overlapping copy: 1,044,848
+
+All following sections use this overlap-free data.
+
+======================================================================
+4. Missing values
+======================================================================
+             missing    pct
+Invoice            0   0.00
+StockCode          0   0.00
+Description     4275   0.41
+Quantity           0   0.00
+InvoiceDate        0   0.00
+Price              0   0.00
+Customer ID   235287  22.52
+Country            0   0.00
+Blank (empty-string) descriptions: 0
+
+======================================================================
+5. Exact duplicate rows (within the data)
+======================================================================
+Exact duplicate rows: 11,812 (1.13%)
+  on cancellation invoices: 61
+  invoices affected: 4,387
+Example (same invoice, product, quantity, price, minute):
+    Invoice StockCode                       Description  Quantity         InvoiceDate  Price  Customer ID         Country
+379  489517     21491   SET OF THREE VINTAGE GIFT WRAPS         1 2009-12-01 11:34:00   1.95      16329.0  United Kingdom
+391  489517     21491   SET OF THREE VINTAGE GIFT WRAPS         1 2009-12-01 11:34:00   1.95      16329.0  United Kingdom
+365  489517     21821  GLITTER STAR GARLAND WITH BELLS          1 2009-12-01 11:34:00   3.75      16329.0  United Kingdom
+386  489517     21821  GLITTER STAR GARLAND WITH BELLS          1 2009-12-01 11:34:00   3.75      16329.0  United Kingdom
+363  489517     21912          VINTAGE SNAKES & LADDERS         1 2009-12-01 11:34:00   3.75      16329.0  United Kingdom
+371  489517     21912          VINTAGE SNAKES & LADDERS         1 2009-12-01 11:34:00   3.75      16329.0  United Kingdom
+
+======================================================================
+6. Invoice types (first character)
+======================================================================
+InvoiceType
+normal    1025677
+C           19165
+A               6
+Name: count, dtype: int64
+
+Quantity sign by invoice type:
+Quantity       neg      pos
+InvoiceType                
+A                0        6
+C            19164        1
+normal        3393  1022284
+
+'A' invoices:
+        Invoice StockCode      Description  Quantity         InvoiceDate     Price  Customer ID         Country
+179403  A506401         B  Adjust bad debt         1 2010-04-29 13:36:00 -53594.36          NaN  United Kingdom
+276274  A516228         B  Adjust bad debt         1 2010-07-19 11:24:00 -44031.79          NaN  United Kingdom
+403472  A528059         B  Adjust bad debt         1 2010-10-20 12:04:00 -38925.87          NaN  United Kingdom
+802920  A563185         B  Adjust bad debt         1 2011-08-12 14:50:00  11062.06          NaN  United Kingdom
+802921  A563186         B  Adjust bad debt         1 2011-08-12 14:51:00 -11062.06          NaN  United Kingdom
+802922  A563187         B  Adjust bad debt         1 2011-08-12 14:52:00 -11062.06          NaN  United Kingdom
+
+======================================================================
+7. Quantity and Price
+======================================================================
+         Quantity       Price
+count  1044848.00  1044848.00
+mean         9.99        4.59
+std        174.22      121.70
+min     -80995.00   -53594.36
+1%          -3.00        0.21
+25%          1.00        1.25
+50%          3.00        2.10
+75%         10.00        4.13
+99%        100.00       18.00
+max      80995.00    38970.00
+
+Price == 0: 6,024   Price < 0: 5
+Negative quantity on normal invoices: 3,393 (Price == 0: 3,393; no Customer ID: 3,393)
+Most common descriptions on those rows:
+Description
+NaN                      2633
+check                     121
+damages                    83
+?                          81
+damaged                    78
+missing                    27
+sold as set on dotcom      20
+Damaged                    17
+smashed                     9
+thrown away                 9
+Name: count, dtype: int64
+
+======================================================================
+8. Extreme lines
+======================================================================
+Largest absolute quantities:
+         Invoice StockCode                         Description  Quantity         InvoiceDate  Price  Customer ID         Country
+1043359   581483     23843         PAPER CRAFT , LITTLE BIRDIE     80995 2011-12-09 09:15:00   2.08      16446.0  United Kingdom
+1043360  C581484     23843         PAPER CRAFT , LITTLE BIRDIE    -80995 2011-12-09 09:27:00   2.08      16446.0  United Kingdom
+564557    541431     23166      MEDIUM CERAMIC TOP STORAGE JAR     74215 2011-01-18 10:01:00   1.04      12346.0  United Kingdom
+564562   C541433     23166      MEDIUM CERAMIC TOP STORAGE JAR    -74215 2011-01-18 10:17:00   1.04      12346.0  United Kingdom
+90857     497946     37410  BLACK AND WHITE PAISLEY FLOWER MUG     19152 2010-02-15 11:57:00   0.10      13902.0         Denmark
+127166    501534     21099         SET/6 STRAWBERRY PAPER CUPS     12960 2010-03-17 13:09:00   0.10      13902.0         Denmark
+127168    501534     21091         SET/6 WOODLAND PAPER PLATES     12960 2010-03-17 13:09:00   0.10      13902.0         Denmark
+127169    501534     21085           SET/6 WOODLAND PAPER CUPS     12744 2010-03-17 13:09:00   0.10      13902.0         Denmark
+
+Highest unit prices:
+         Invoice     StockCode   Description  Quantity         InvoiceDate     Price  Customer ID         Country
+725619   C556445             M        Manual        -1 2011-06-10 15:31:00  38970.00      15098.0  United Kingdom
+241827    512771             M        Manual         1 2010-06-17 16:53:00  25111.09          NaN  United Kingdom
+241824   C512770             M        Manual        -1 2010-06-17 16:52:00  25111.09      17399.0  United Kingdom
+320581   C520667  BANK CHARGES  Bank Charges        -1 2010-08-27 13:42:00  18910.69          NaN  United Kingdom
+1027540  C580605     AMAZONFEE    AMAZON FEE        -1 2011-12-05 11:36:00  17836.46          NaN  United Kingdom
+546640   C540117     AMAZONFEE    AMAZON FEE        -1 2011-01-05 09:55:00  16888.02          NaN  United Kingdom
+546641   C540118     AMAZONFEE    AMAZON FEE        -1 2011-01-05 09:57:00  16453.71          NaN  United Kingdom
+517955    537632     AMAZONFEE    AMAZON FEE         1 2010-12-07 15:08:00  13541.33          NaN  United Kingdom
+
+======================================================================
+9. Non-standard stock codes
+======================================================================
+Rows with non-standard StockCode: 5,993 across 63 codes
+              rows                  example_description  total_value  treated_as_product
+StockCode                                                                               
+POST          2086                              POSTAGE   110430.410               False
+DOT           1425                       DOTCOM POSTAGE   309844.100               False
+M             1398                               Manual   -82950.620               False
+C2             277                             CARRIAGE    13136.000               False
+D              173                             Discount   -12879.630               False
+S              102                              SAMPLES    -6000.850               False
+BANK CHARGES   100                         Bank Charges   -35482.249               False
+ADJUST          67  Adjustment by john on 26/01/2010 16     6835.240               False
+AMAZONFEE       36                           AMAZON FEE  -221520.500               False
+DCGS0058        31                     MISO PRETTY  GUM       34.820                True
+gift_0001_30    29   Dotcomgiftshop Gift Voucher £30.00      610.090               False
+gift_0001_20    29   Dotcomgiftshop Gift Voucher £20.00      471.060               False
+DCGSSGIRL       25                               update      295.630                True
+DCGSSBOY        23                               update      251.350                True
+PADS            19           PADS TO MATCH ALL CUSHIONS      -36.583                True
+gift_0001_10    16   Dotcomgiftshop Gift Voucher £10.00      126.210               False
+CRUK            16                      CRUK Commission    -7933.430               False
+TEST001         15              This is a test product.      202.500               False
+DCGS0003        14                  BOXED GLASS ASHTRAY       32.590                True
+DCGS0076        14         SUNJAR LED NIGHT NIGHT LIGHT      275.960                True
+gift_0001_50     8   Dotcomgiftshop Gift Voucher £50.00      253.590               False
+gift_0001_40     7   Dotcomgiftshop Gift Voucher £40.00      166.090               False
+DCGS0069         6                OOH LA LA DOGS COLLAR       80.310                True
+B                6                      Adjust bad debt  -147614.080               False
+m                5                               Manual       15.050               False
+DCGS0004         5           HAYNES CAMPER SHOULDER BAG       67.940                True
+DCGS0066N        4              NAVY CUDDLES DOG HOODIE       17.300                True
+DCGS0072         4               CAT CAMOUFLAGUE COLLAR       20.680                True
+gift_0001_80     4   Dotcomgiftshop Gift Voucher £80.00        0.000               False
+ADJUST2          3  Adjustment by Peter on Jun 25 2010       731.050               False
+DCGS0070         3                CAMOUFLAGE DOG COLLAR       25.440                True
+gift_0001_70     3   Dotcomgiftshop Gift Voucher £70.00       59.570               False
+DCGS0068         3                    DOGS NIGHT COLLAR       17.120                True
+SP1002           3               KID'S CHALKBOARD/EASEL       14.750                True
+DCGS0037         2                   KEY-RING CORKSCREW       12.720                True
+gift_0001_90     2                                  NaN        0.000               False
+DCGS0062         2              ROAD-RAGE CAR FRESHENER        2.510                True
+gift_0001_60     2                                  NaN        0.000               False
+TEST002          2              This is a test product.        1.000               False
+DCGS0067         1                                 ebay        0.000                True
+DCGS0039         1                                  NaN        0.000                True
+DCGS0036         1                                  NaN        0.000                True
+DCGS0044         1              HANDZ-OFF CAR FRESHENER        2.570                True
+C3               1                                  NaN        0.000                True
+DCGS0006         1                                  NaN        0.000                True
+DCGS0016         1                                  NaN        0.000                True
+DCGS0027         1                                  NaN        0.000                True
+47503J           1     SET/3 FLORAL GARDEN TOOLS IN BAG       16.130                True
+DCGS0066P        1                                  NaN        0.000                True
+DCGS0059         1                                  NaN        0.000                True
+DCGS0060         1                                  NaN        0.000                True
+DCGS0057         1                                  NaN        0.000                True
+DCGS0053         1                                  NaN        0.000                True
+DCGS0055         1                                  NaN        0.000                True
+DCGS0056         1                                  NaN        0.000                True
+DCGS0041         1     HAYNES MINI-COOPER PLAYING CARDS        5.060                True
+GIFT             1                                  NaN        0.000               False
+DCGSLBOY         1                                  NaN        0.000                True
+DCGSLGIRL        1                                  NaN        0.000                True
+DCGS0071         1                                  NaN        0.000                True
+DCGS0073         1                                 ebay        0.000                True
+DCGS0074         1                                  NaN        0.000                True
+DCGS0075         1                 CAMOUFLAGUE DOG LEAD       12.720                True
+
+Rows classified as NON-product (services/fees/adjustments/vouchers): 5,812
+
+======================================================================
+10. Distinct counts
+======================================================================
+Invoice     : 53,628
+StockCode   : 5,305
+Description : 5,698
+Customer ID : 5,942
+Country     : 43
+StockCodes with more than one Description: 1,232
+Example, StockCode 20713:
+Description
+JUMBO BAG OWLS                  1346
+missing                            1
+wrongly marked. 23343 in box       1
+wrongly coded-23343                1
+found                              1
+Found                              1
+Name: count, dtype: int64
+Customer IDs with a fractional part: 0
+
+======================================================================
+11. Invoice consistency
+======================================================================
+Invoices with >1 timestamp: 83 (max spread: 0 days 00:09:00)
+Invoices with >1 customer: 0
+Invoices with >1 country: 0
+Lines per invoice:
+count    53628.00
+mean        19.48
+std         38.45
+min          1.00
+25%          1.00
+50%          9.00
+75%         23.00
+max       1114.00
+Name: lines, dtype: float64
+
+======================================================================
+12. Countries
+======================================================================
+Country
+United Kingdom     959983
+EIRE                17689
+Germany             17363
+France              14059
+Netherlands          5138
+Spain                3766
+Switzerland          3183
+Belgium              3111
+Portugal             2540
+Australia            1891
+Channel Islands      1647
+Italy                1509
+Name: count, dtype: int64
+Countries: 43; UK share of rows: 91.9%
+Unusual country values: ['Unspecified', 'European Community', 'West Indies']
+
+======================================================================
+13. Revenue under different rules (why business rules matter)
+======================================================================
+A. Naive sum(Qty*Price), raw workbook incl. sheet overlap             19,287,250.57
+B. Naive sum(Qty*Price), overlap removed                              18,909,762.12
+C. Sale lines only (normal invoice, Qty>0, Price>0), all codes        20,522,679.86
+D. Gross product sales = C restricted to product codes                19,700,954.46
+E. Cancelled product value ('C' invoices, product codes)                -719,692.94
+F. Net product sales = D + E                                          18,981,261.52
+G. Sensitivity: F with within-file exact duplicates removed           18,927,399.07
+
+Cancellation rate (value): 3.65% of gross product sales
+
+======================================================================
+14. Monthly product sales and orders
+======================================================================
+         gross_sales  orders  customers  trading_days  cancellations   net_sales  avg_order_value
+Month                                                                                            
+2009-12    801102.97    1666        951            21      -19561.28   781541.69           480.85
+2010-01    613850.81    1049        701            24       -7465.63   606385.18           585.18
+2010-02    539744.69    1189        771            24      -12584.39   527160.30           453.95
+2010-03    764333.85    1647       1051            27       -9657.20   754676.65           464.08
+2010-04    648993.82    1435        939            23      -10025.26   638968.56           452.26
+2010-05    645645.39    1484        965            24      -37294.14   608351.25           435.07
+2010-06    699316.02    1612       1034            26      -26380.61   672935.41           433.82
+2010-07    634896.99    1507        924            26      -17132.73   617764.26           421.30
+2010-08    676060.72    1402        910            26      -12418.65   663642.07           482.21
+2010-09    871878.34    1789       1136            26      -27777.97   844100.37           487.36
+2010-10   1098017.67    2244       1492            26      -25550.02  1072467.65           489.31
+2010-11   1435680.12    2719       1606            26      -35120.88  1400559.24           528.02
+2010-12    777931.77    1550        884            20      -17607.86   760323.91           501.89
+2011-01    671933.19    1081        739            24      -91526.30   580406.89           621.58
+2011-02    508886.20    1093        757            24       -8375.87   500510.33           465.59
+2011-03    691257.61    1440        973            27      -10675.30   680582.31           480.04
+2011-04    516218.12    1235        853            21      -33316.91   482901.21           417.99
+2011-05    741192.41    1668       1054            25       -8948.23   732244.18           444.36
+2011-06    738751.87    1525        990            26      -13760.84   724991.03           484.43
+2011-07    689364.41    1452        946            26      -11409.21   677955.20           474.77
+2011-08    725513.50    1339        933            26      -22929.52   702583.98           541.83
+2011-09   1030475.36    1818       1259            26      -17044.68  1013430.68           566.82
+2011-10   1106669.82    2005       1361            26      -43992.16  1062677.66           551.96
+2011-11   1457745.53    2751       1660            26      -25010.54  1432734.99           529.90
+2011-12    615493.27     816        614             8     -174126.76   441366.51           754.28
+
+November net sales 2010 vs 2011: 1,400,559.24 vs 1,432,734.99
+
+======================================================================
+15. Top products: gross vs net (cancellations matter)
+======================================================================
+Top 10 by GROSS sales:
+                                  description  gross_sales  cancelled  units_sold  orders  net_sales  gross_rank  net_rank
+StockCode                                                                                                                 
+22423                REGENCY CAKESTAND 3 TIER    331084.27  -16570.80     26519.0  3918.0  314513.47         1.0       1.0
+85123A     WHITE HANGING HEART T-LIGHT HOLDER    258065.91   -9387.10     94323.0  5365.0  248678.81         2.0       2.0
+85099B                JUMBO BAG RED RETROSPOT    180888.03   -2168.82     96931.0  3989.0  178719.21         3.0       3.0
+23843             PAPER CRAFT , LITTLE BIRDIE    168469.60 -168469.60     80995.0     1.0       0.00         4.0    4877.0
+47566                           PARTY BUNTING    148395.98   -1238.55     28216.0  2674.0  147157.43         5.0       4.0
+84879           ASSORTED COLOUR BIRD ORNAMENT    129681.08    -774.07     80293.0  2807.0  128907.01         6.0       5.0
+22086         PAPER CHAIN KIT 50'S CHRISTMAS     117884.19   -1461.70     35126.0  2018.0  116422.49         7.0       6.0
+23166          MEDIUM CERAMIC TOP STORAGE JAR     81700.92  -77479.64     78033.0   247.0    4221.28         8.0    1013.0
+79321                           CHILLI LIGHTS     80873.23    -635.75     15918.0  1135.0   80237.48         9.0       7.0
+22197                    SMALL POPCORN HOLDER     79552.50    -616.58     88537.0  2322.0   78935.92        10.0       8.0
+
+Top 10 by NET sales:
+                                   description  gross_sales  cancelled  units_sold  orders  net_sales  gross_rank  net_rank
+StockCode                                                                                                                  
+22423                 REGENCY CAKESTAND 3 TIER    331084.27  -16570.80     26519.0  3918.0  314513.47         1.0       1.0
+85123A      WHITE HANGING HEART T-LIGHT HOLDER    258065.91   -9387.10     94323.0  5365.0  248678.81         2.0       2.0
+85099B                 JUMBO BAG RED RETROSPOT    180888.03   -2168.82     96931.0  3989.0  178719.21         3.0       3.0
+47566                            PARTY BUNTING    148395.98   -1238.55     28216.0  2674.0  147157.43         5.0       4.0
+84879            ASSORTED COLOUR BIRD ORNAMENT    129681.08    -774.07     80293.0  2807.0  128907.01         6.0       5.0
+22086          PAPER CHAIN KIT 50'S CHRISTMAS     117884.19   -1461.70     35126.0  2018.0  116422.49         7.0       6.0
+79321                            CHILLI LIGHTS     80873.23    -635.75     15918.0  1135.0   80237.48         9.0       7.0
+22197                     SMALL POPCORN HOLDER     79552.50    -616.58     88537.0  2322.0   78935.92        10.0       8.0
+22386                  JUMBO BAG PINK POLKADOT     76385.20    -866.98     39467.0  2245.0   75518.22        11.0       9.0
+84347      ROTATING SILVER ANGELS T-LIGHT HLDR     71361.60    -330.45     31433.0   756.0   71031.15        13.0      10.0
+
+======================================================================
+16. Customers
+======================================================================
+Gross product sales with a Customer ID: 86.9%
+Customers with purchases: 5,852; top 10% (585) share of identified sales: 63.8%
+Customers with only one order: 27.6%
+
+======================================================================
+17. Outlier flagging on sale-line value (IQR rule)
+======================================================================
+Q1=3.90  Q3=17.70  upper fence=38.40
+Lines above fence: 81,186 (8.0%)
+The IQR rule flags many ordinary wholesale orders: flag for review, never auto-remove.
+Alternative: |z| > 3 on log10(line value): 5,320 lines

@@ -1,0 +1,7 @@
+[server]
+# Matches MAX_FILE_MB in src/data/loader.py
+maxUploadSize = 50
+
+[browser]
+# Do not send usage statistics to Streamlit.
+gatherUsageStats = false

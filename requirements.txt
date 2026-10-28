@@ -1,0 +1,15 @@
+# Phase 2: data exploration
+# pandas is pinned to 3.0.3: on this Windows machine, Smart App Control blocked
+# a DLL in pandas 3.1.0 ("An Application Control policy has blocked this file").
+pandas==3.0.3
+numpy==2.5.4
+openpyxl==3.1.5
+pyarrow==26.0.0
+
+# Phase 3: testing
+pytest==9.2.0
+pytest-cov==7.1.0
+
+# Phase 4: web application
+streamlit==1.66.1
+plotly==7.1.0
