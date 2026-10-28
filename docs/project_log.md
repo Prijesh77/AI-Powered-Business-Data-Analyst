@@ -20,7 +20,6 @@ Running record of progress, decisions, and known issues. Updated at the end of e
 - [ ] Student review of Phase 4
 - [ ] Student's manual Excel check of February 2011 (Phase 3 doc, section 6)
 - [ ] Verify every literature source before citing
-- [ ] First Git commit (nothing committed yet)
 - [ ] Phase 5: AI integration (rule-based interpreter first, then a free local LLM)
 - [ ] Phase 6: advanced feature (forecasting)
 - [ ] Phase 7: testing and evaluation
